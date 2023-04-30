@@ -73,10 +73,10 @@ class _AddTodoPageState extends State<AddTodoPage> {
     //show success or failure
     if (response.statusCode == 201) {
       print('Success');
-      showSuccessMessage('Erfolg')
+      showSuccessMessage('Erfolg');
     } else {
       print('Failed');
-      showSuccessMessage('Fehler')
+      showSuccessMessage('Fehler');
     }
   }
 
