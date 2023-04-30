@@ -36,10 +36,20 @@ class _TodoListPageState extends State<TodoListPage> {
             itemCount: items.length,
             itemBuilder: (context, index) {
               final item = items[index] as Map;
+              final id = item['id'];
               return ListTile(
                 leading: CircleAvatar(child: Text('${index + 1}')),
                 title: Text(item['todo']),
                 trailing: PopupMenuButton(
+                  onSelected: (value) {
+                    if (value == 'edit') {
+                      // open edit
+                      navigateToEditPage(item);
+                    } else if (value == 'delete') {
+                      // Delete and remove item
+                      deleteById(id);
+                    }
+                  },
                   itemBuilder: (context) {
                     return [
                       PopupMenuItem(
@@ -65,11 +75,27 @@ class _TodoListPageState extends State<TodoListPage> {
     );
   }
 
-  void navigateToAddPage() {
+  Future<void> navigateToAddPage() async {
     final route = MaterialPageRoute(
       builder: (context) => AddTodoPage(),
     );
-    Navigator.push(context, route);
+    await Navigator.push(context, route);
+
+    setState(() {
+      isLoading = true;
+    });
+    fetchTodo();
+  }
+
+  Future<void> navigateToEditPage(Map item) async {
+    final route = MaterialPageRoute(
+      builder: (context) => AddTodoPage(todo: item),
+    );
+    await Navigator.push(context, route);
+    setState(() {
+      isLoading = true;
+    });
+    fetchTodo();
   }
 
   Future<void> deleteById(String id) async {
@@ -78,7 +104,7 @@ class _TodoListPageState extends State<TodoListPage> {
     final uri = Uri.parse(url);
     final response = await http.delete(uri);
 
-    if (response.body == 200) {
+    if (response.statusCode == 200) {
       //refresh list
       showSuccessMessage('Löschen Erfolgreich');
       fetchTodo();
