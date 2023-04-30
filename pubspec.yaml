@@ -39,6 +39,7 @@ dependencies:
   equatable: ^2.0.5
   http: ^0.13.5
   json_annotation: ^4.8.0
+  device_info_plus: ^8.2.2
 
 dev_dependencies:
   flutter_test:
