@@ -96,5 +96,6 @@ class _AddTodoPageState extends State<AddTodoPage> {
       var androidDeviceInfo = await deviceInfo.androidInfo;
       return androidDeviceInfo.id; // unique ID on Android
     }
+    return null;
   }
 }
